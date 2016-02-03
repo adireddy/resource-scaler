@@ -1,0 +1,38 @@
+{
+  "name": "resource-scaler",
+  "version": "1.0.0",
+  "description": "A simple node utility to resize images using imagemagick",
+  "main": "main.js",
+  "license": "MIT",
+  "bin": {
+    "resource-scaler": "./main.js"
+  },
+  "scripts": {
+    "test": "echo \"no test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adireddy/resource-scaler"
+  },
+  "bugs": {
+    "url": "https://github.com/adireddy/resource-scaler/issues"
+  },
+  "author": {
+    "name": "Adi Reddy Mora",
+    "email": "adiinteractive@gmail.com"
+  },
+  "keywords": [
+    "resource",
+    "image",
+    "resize",
+    "imagemagick"
+  ],
+  "dependencies": {
+    "grunt": "latest",
+    "grunt-cli": "latest",
+    "grunt-exec": "latest"
+  },
+  "devDependencies": {
+    "imagemagick": "^0.1.3"
+  }
+}
