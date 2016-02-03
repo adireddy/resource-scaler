@@ -1,4 +1,5 @@
-var fs = require("fs");
+#!/usr/bin/env node
+
 var _ = require("underscore")._;
 var winston = require("winston");
 

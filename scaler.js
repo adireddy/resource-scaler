@@ -1,6 +1,6 @@
-var fs = require("fs");
-var im = require("imagemagick");
-var _ = require("underscore")._;
+var fs = require('fs')
+var im = require('imagemagick')
+var _ = require('underscore')._
 
 module.exports = function() {
     var _opts = arguments[0];
