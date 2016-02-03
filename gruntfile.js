@@ -4,7 +4,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON("package.json"),
 
         exec: {
-            copy: "mkdir npm-publish || true && cp -r main.js package.json LICENSE README.md ./npm-publish/",
+            copy: "mkdir npm-publish || true && cp main.js scaler.js package.json LICENSE README.md ./npm-publish/",
             npm: "npm publish ./npm-publish/ && rm -r npm-publish"
         }
     });

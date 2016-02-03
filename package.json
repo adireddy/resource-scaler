@@ -1,8 +1,8 @@
 {
   "name": "resource-scaler",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple node utility to resize images using imagemagick",
-  "main": "main.js",
+  "main": "./scaler.js",
   "license": "MIT",
   "bin": {
     "resource-scaler": "./main.js"
@@ -33,6 +33,9 @@
     "grunt-exec": "latest"
   },
   "devDependencies": {
-    "imagemagick": "^0.1.3"
+    "imagemagick": "^0.1.3",
+    "winston": "~1.0.0",
+    "optimist": "~0.6.1",
+    "underscore": "~1.8.3"
   }
 }

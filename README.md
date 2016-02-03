@@ -9,11 +9,11 @@ Requires `imagemagick` CLI tools to be installed.
 
 ### Installation
 
-`npm install resource-scaler`
+`npm install -g resource-scaler`
 
 ### Usage
 
-`resource-scaler -i resources/1024x648 -o resources/480x320 -s 0.46875`
+`resource-scaler -i resources/480x320 -o resources/240x160 -s 0.5`
 
 | Option | Description        |
 |--------|--------------------|
