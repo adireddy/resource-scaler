@@ -21,6 +21,21 @@ Requires `imagemagick` CLI tools to be installed.
 | -o     | output folder      |
 | -s     | scale factor (0-1) |
 
+### Formats
+
+- jpg
+- png
+- gif
+- tif
+- bmp
+- svg
+- webp
+- ico
+
+Tested `.png` and `.jpg` but should work with all the formats listed above.
+
+Any issues please [report](https://github.com/adireddy/resource-scaler/issues/new).
+
 ### Licensing Information
 
 <a rel="license" href="http://opensource.org/licenses/MIT">
