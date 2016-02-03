@@ -1,7 +1,7 @@
 # resource-scaler
 A simple node utility to resize images using imagemagick.
 
-[![npm version](https://badge.fury.io/js/resource-scaler.js.svg)](https://badge.fury.io/js/resource-scaler.js)
+[![npm version](https://badge.fury.io/js/resource-scaler.svg)](https://badge.fury.io/js/resource-scaler)
 
 Requires `imagemagick` CLI tools to be installed.
 
