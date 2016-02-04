@@ -36,16 +36,16 @@ winston.add(winston.transports.Console, {
 winston.debug("parsed arguments", argv);
 
 opts.logger = winston;
-opts.scale = argv.scale ? parseFloat(argv.scale) : 1;
+opts.scale = argv.scale && Number(argv.scale) > 0 ? Number(argv.scale) : 1;
 
 if (argv.help || !opts.input || !opts.output) {
-    if (!argv.help) {
-        winston.error("invalid options");
-    }
+    if (!argv.help) winston.error("invalid options");
     winston.info("Usage: resource-scaler -i resources/480x320 -o resources/240x160 -s 0.5");
     winston.info(optimist.help());
     process.exit(1);
 }
+
+if (opts.scale === 1) winston.info("using scale 1");
 
 scaler(opts, function (err, obj) {
     if (err) {

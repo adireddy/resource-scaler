@@ -8,8 +8,15 @@ module.exports = function() {
     var _inputFolder = _opts.input;
     var _outputFolder = _opts.output;
     var _scale = _opts.scale;
+    var _files;
 
-    var _files = fs.readdirSync(_inputFolder);;
+    try {
+        _files = fs.readdirSync(_inputFolder);
+    }
+    catch(e) {
+        _callback("inpot folder '" + _inputFolder + "' not found");
+    }
+
     var EXTENSIONS = [/(.jpg)$/i, /(.jpeg)$/i, /(.png)$/i, /(.gif)$/i, /(.tif)$/i, /(.tiff)$/i, /(.bmp)$/i, /(.svg)$/i, /(.webp)$/i, /(.ico)$/i];
 
     if (_files) {
@@ -19,15 +26,18 @@ module.exports = function() {
 
         _files.forEach(function (file) {
             im.identify(["-format", "%wx%h", file], function (err, output) {
-                if (err) throw err;
+                if (err) _callback("unable to get dimensions: " + file);;
                 var dimensions = output.split("x");
                 im.resize({
                     srcPath: file,
                     dstPath: file.replace(_inputFolder, _outputFolder),
                     width: Math.round(dimensions[0] * _scale),
-                    height: Math.round(dimensions[1] * _scale)
+                    height: Math.round(dimensions[1] * _scale),
+                    quality: 1,
+                    sharpening: 0
+
                 }, function (err, stdout, stderr) {
-                    if (err) throw err;
+                    if (err) _callback("unable to resize: " + file);
                 });
             });
         });
