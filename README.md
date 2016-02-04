@@ -17,11 +17,11 @@ Requires `imagemagick` CLI tools to be installed.
 
 `resource-scaler -i resources/480x320 -o resources/240x160 -s 0.5`
 
-| Option | Description        |
-|--------|--------------------|
-| -i     | input folder       |
-| -o     | output folder      |
-| -s     | scale factor (0-1) |
+| Option | Description   |
+|--------|---------------|
+| -i     | input folder  |
+| -o     | output folder |
+| -s     | scale factor  |
 
 ### Formats
 
