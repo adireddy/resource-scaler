@@ -1,7 +1,7 @@
 {
   "name": "resource-scaler",
-  "version": "1.0.5",
-  "description": "A simple node utility to resize images using imagemagick",
+  "version": "1.1.2",
+  "description": "A simple node utility to resize images using imagemagick.",
   "main": "./scaler.js",
   "license": "MIT",
   "bin": {
