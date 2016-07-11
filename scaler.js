@@ -14,7 +14,7 @@ module.exports = function() {
         _files = fs.readdirSync(_inputFolder);
     }
     catch(e) {
-        _callback("inpot folder '" + _inputFolder + "' not found");
+        _callback("input folder '" + _inputFolder + "' not found");
     }
 
     var EXTENSIONS = [/(.jpg)$/i, /(.jpeg)$/i, /(.png)$/i, /(.gif)$/i, /(.tif)$/i, /(.tiff)$/i, /(.bmp)$/i, /(.svg)$/i, /(.webp)$/i, /(.ico)$/i];
