@@ -19,6 +19,11 @@ var optimist = require("optimist")
         , "default": 1
         , describe: "scale factor"
     })
+    .options("quality", {
+        alias: "q"
+        , "default": 100
+        , describe: "quality (0-100, PNG and JPEG only)"
+    })
     .options("help", {
         alias: "h"
         , describe: "help"
@@ -37,6 +42,7 @@ winston.debug("parsed arguments", argv);
 
 opts.logger = winston;
 opts.scale = argv.scale && Number(argv.scale) > 0 ? Number(argv.scale) : 1;
+opts.quality = argv.quality && Number(argv.quality) >= 0 && Number(argv.quality) <= 100 ? Number(argv.quality) : 100;
 
 if (argv.help || !opts.input || !opts.output) {
     if (!argv.help) winston.error("invalid options");

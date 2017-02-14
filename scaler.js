@@ -1,6 +1,5 @@
 var fs = require("fs");
-var im = require("imagemagick");
-var _ = require("underscore")._;
+var Jimp = require("jimp");
 
 module.exports = function() {
     var _opts = arguments[0];
@@ -8,6 +7,7 @@ module.exports = function() {
     var _inputFolder = _opts.input;
     var _outputFolder = _opts.output;
     var _scale = _opts.scale;
+    var _quality = _opts.quality;
     var _files;
 
     try {
@@ -17,7 +17,7 @@ module.exports = function() {
         _callback("input folder '" + _inputFolder + "' not found");
     }
 
-    var EXTENSIONS = [/(.jpg)$/i, /(.jpeg)$/i, /(.png)$/i, /(.gif)$/i, /(.tif)$/i, /(.tiff)$/i, /(.bmp)$/i, /(.svg)$/i, /(.webp)$/i, /(.ico)$/i];
+    var EXTENSIONS = [/(.jpg)$/i, /(.jpeg)$/i, /(.png)$/i, /(.bmp)$/i];
 
     if (_files) {
         if (!fs.existsSync(_outputFolder)) fs.mkdirSync(_outputFolder);
@@ -25,21 +25,13 @@ module.exports = function() {
         _applyScale(_inputFolder);
 
         _files.forEach(function (file) {
-            im.identify(["-format", "%wx%h", file], function (err, output) {
-                if (err) _callback("unable to get dimensions: " + file);;
-                var dimensions = output.split("x");
-                im.resize({
-                    srcPath: file,
-                    dstPath: file.replace(_inputFolder, _outputFolder),
-                    width: Math.round(dimensions[0] * _scale),
-                    height: Math.round(dimensions[1] * _scale),
-                    quality: 1,
-                    sharpening: 0
-
-                }, function (err, stdout, stderr) {
-                    if (err) _callback("unable to resize: " + file);
-                });
+            Jimp.read(file, function (err, im) {
+                if (err) throw err;
+                im.resize(Math.round(im.bitmap.width * _scale), Math.round(im.bitmap.height * _scale)) // resize
+                    .quality(_quality)
+                    .write(file.replace(_inputFolder, _outputFolder)); // save
             });
+
         });
     }
 

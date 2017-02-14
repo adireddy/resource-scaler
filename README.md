@@ -1,13 +1,7 @@
 # resource-scaler
-A simple node utility to resize images using imagemagick.
+A simple node utility to resize images uisng Jimp.
 
 [![npm version](https://badge.fury.io/js/resource-scaler.svg)](https://badge.fury.io/js/resource-scaler)
-
-Requires `imagemagick` CLI tools to be installed.
-
-| Mac | Windows |
-|---|---|---|---|
-| `brew install imagemagick` | [Download](http://www.imagemagick.org/script/binary-releases.php#windows) |
 
 ### Installation
 
@@ -17,24 +11,18 @@ Requires `imagemagick` CLI tools to be installed.
 
 `resource-scaler -i resources/480x320 -o resources/240x160 -s 0.5`
 
-| Option | Description  |
-|--------|--------------|
-| -i     | input folder |
-| -o     | output folder|
-| -s     | scale factor |
+| Option | Description                         | Default  |
+|--------|-------------------------------------|----------|
+| -i     | input folder                        |          |
+| -o     | output folder                       |          |
+| -s     | scale factor                        |     1    |
+| -q     | quality (0-100, PNG and JPEG only)  |    100   |
 
 ### Formats
 
 - jpg
 - png
-- gif
-- tif
 - bmp
-- svg
-- webp
-- ico
-
-Tested `.png` and `.jpg` but should work with all the formats listed above.
 
 Any issues please [report](https://github.com/adireddy/resource-scaler/issues/new).
 
