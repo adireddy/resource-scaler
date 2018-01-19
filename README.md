@@ -17,13 +17,13 @@ A simple node utility to resize PNG, JPEG and BMP images using Jimp.
 
 | Option          | Description                         | Default  |
 |-----------------|-------------------------------------|----------|
-| --input, -i     | input folder                        |          |
-| --output, -o    | output folder                       |          |
-| --scale, -s     | scale factor                        |     1    |
-| --quality, -q   | quality (0-100, PNG and JPEG only)  |    100   |
-| --algorithm, -a | 0-5<sup>1</sup>                     |     0    |
-| --verbose, -v   | verbose                             |          |
-| --help, -h      | help                                |          |
+| -i, --input     | input folder                        |          |
+| -o, --output    | output folder                       |          |
+| -s, --scale     | scale factor                        |     1    |
+| -q, --quality   | quality (0-100, PNG and JPEG only)  |    100   |
+| -a, --algorithm | 0-5<sup>1</sup>                     |     0    |
+| -v, --verbose   | verbose                             |          |
+| -h, --help      | help                                |          |
 
 **<sup>1</sup>Algorithms**
 
