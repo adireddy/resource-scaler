@@ -21,9 +21,18 @@ A simple node utility to resize PNG, JPEG and BMP images using Jimp.
 | --output, -o    | output folder                       |          |
 | --scale, -s     | scale factor                        |     1    |
 | --quality, -q   | quality (0-100, PNG and JPEG only)  |    100   |
-| --algorithm, -a | 0-bilinear, 1-nearestNeighbor, 2-bilinearInterpolation, 3-bicubicInterpolation, 4-hermiteInterpolation, 5-bezierInterpolation  |    0   |
-| --verbose, -v   | verbose                             |    100   |
-| --help, -h      | help                                |    100   |
+| --algorithm, -a | 0-5<sup>1</sup>                     |     0    |
+| --verbose, -v   | verbose                             |          |
+| --help, -h      | help                                |          |
+
+**<sup>1</sup>Algorithms**
+
+- 0 - bilinear
+- 1 - nearestNeighbor
+- 2 - bilinearInterpolation
+- 3 - bicubicInterpolation
+- 4 - hermiteInterpolation
+- 5 - bezierInterpolation
 
 ### Formats
 
