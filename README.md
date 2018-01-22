@@ -13,7 +13,7 @@ A simple node utility to resize PNG, JPEG and BMP images using Jimp.
 
 ### Usage
 
-`resource-scaler -i resources/480x320 -o resources/240x160 -s 0.5`
+`resource-scaler -i resources/scale-8 -o resources/scale-4 -s 0.5`
 
 | Option          | Description                         | Default  |
 |-----------------|-------------------------------------|----------|

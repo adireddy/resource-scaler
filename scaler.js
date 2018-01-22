@@ -1,5 +1,7 @@
 var fs = require("fs");
+var yaml = require("js-yaml");
 var Jimp = require("jimp");
+var iterator = require("object-recursive-iterator");
 var winston = require("winston");
 
 module.exports = function () {
@@ -12,7 +14,8 @@ module.exports = function () {
     ];
 
     var DATA_EXTENSIONS = [
-        /(.json)$/i
+        /(.json)$/i,
+        /(.atlas)$/i
     ];
 
     var ALGORITHMS = [
@@ -93,33 +96,91 @@ module.exports = function () {
             });
         });
     }
-    
+
     function processDataFiles() {
         dataFiles.forEach(function (file) {
             if (/(.json)$/i.test(file)) {
                 var json = require(process.cwd() + "/" + file);
                 if (json.multipack) {
+                    log("Processing multipack texture json " + file);
                     for (var i in json.textures) {
                         var textures = json.textures[i];
-                        textures["meta"].size.w = textures["meta"].size.w * scale;
-                        textures["meta"].size.h = textures["meta"].size.h * scale;
+                        if (textures["meta"]) updateSize(textures["meta"]);
                         for (var frameData in textures["frames"]) {
                             var data = textures["frames"][frameData];
                             processTextureData(data);
                         }
                     }
                 }
-                else {
-                    json["meta"].size.w = json["meta"].size.w * scale;
-                    json["meta"].size.h = json["meta"].size.h * scale;
+                else if (json["frames"]) {
+                    log("Processing texture json " + file);
+                    if (json["meta"]) updateSize(json["meta"]);
                     for (var frameData in json["frames"]) {
                         var data = json["frames"][frameData];
                         processTextureData(data);
                     }
                 }
+                else if (json["bones"]) {
+                    log("Processing spine json " + file);
+                    iterator.forAll(json, function (path, key, obj) {
+                        switch (key) {
+                            case "x":
+                            case "y":
+                            case "width":
+                            case "height":
+                            case "length":
+                                obj[key] = obj[key] * scale;
+                                break;
+                        }
+                    });
+                }
                 fs.writeFileSync(file.replace(inputFolder, outputFolder), JSON.stringify(json, null, 2));
             }
+            else if (/(.atlas)$/i.test(file)) {
+                log("Processing spine atlas " + file);
+                var data = fs.readFileSync(process.cwd() + "/" + file);
+                data = data.toString().replace(/ /g, "");
+                var doc = yaml.safeLoad(data, "utf8");
+                var allData = doc.split(" ");
+
+                var modifiedData = allData[0] + "\n";
+                for (var i = 1; i < allData.length; i++) {
+                    var dataVal = allData[i].split(":");
+                    switch (dataVal[0]) {
+                        case "xy":
+                        case "orig":
+                        case "size":
+                            var valueData = dataVal[1].split(",");
+                            valueData[0] = valueData[0] * scale;
+                            valueData[1] = valueData[1] * scale;
+                            dataVal[1] = valueData.join(",");
+                            break;
+                    }
+                    if (dataVal[1]) modifiedData += "  " + dataVal.join(":") + "\n";
+                    else modifiedData += dataVal.join(":") + "\n";
+                }
+                fs.writeFileSync(file.replace(inputFolder, outputFolder), modifiedData);
+            }
         });
+    }
+
+    function scanSpinJson(obj, key) {
+        var k;
+        if (obj instanceof Object) {
+            for (k in obj){
+                if (obj.hasOwnProperty(k)){
+                    scanSpinJson(obj[k], k);
+                }
+            }
+        }
+        else {
+            console.log(key + ": " + obj);
+        };
+    };
+
+    function updateSize(data) {
+        data.size.w = data.size.w * scale;
+        data.size.h = data.size.h * scale;
     }
 
     function processTextureData(data) {
@@ -146,7 +207,7 @@ module.exports = function () {
             }
         }
     }
-    
+
     function checkCount() {
         if (imageFiles.length + dataFiles.length === count) winston.info("Done.");
     }
