@@ -7,35 +7,34 @@ var scaler = require("./scaler");
 
 var optimist = require("optimist")
     .options("input", {
-        alias: "i"
-        , describe: "input folder"
+        alias: "i",
+        describe: "input folder"
     })
     .options("output", {
-        alias: "o"
-        , describe: "output folder"
+        alias: "o",
+        describe: "output folder"
     })
     .options("scale", {
-        alias: "s"
-        , "default": 1
-        , describe: "scale factor"
+        alias: "s",
+        "default": 1,
+        describe: "scale factor"
     })
     .options("quality", {
-        alias: "q"
-        , "default": 100
-        , describe: "quality (0-100, PNG and JPEG only)"
+        alias: "q",
+        "default": 100,
+        describe: "quality (0-100, PNG and JPEG only)"
     })
     .options("algorithm", {
-        alias: "a"
-        , "default": 0
-        , describe: "0-bilinear, 1-nearestNeighbor, 2-bilinearInterpolation, 3-bicubicInterpolation, 4-hermiteInterpolation, 5-bezierInterpolation"
+        alias: "a",
+        describe: "1-bilinear, 2-nearestNeighbor, 3-bicubic, 4-hermite, 5-bezier"
     })
     .options("verbose", {
-        alias: "v"
-        , describe: "verbose"
+        alias: "v",
+        describe: "verbose"
     })
     .options("help", {
-        alias: "h"
-        , describe: "help"
+        alias: "h",
+        describe: "help"
     });
 
 var argv = optimist.argv;
@@ -43,9 +42,9 @@ var opts = _.extend({}, argv);
 
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {
-    colorize: true
-    , level: argv.log
-    , handleExceptions: false
+    colorize: true,
+    level: argv.log,
+    handleExceptions: false
 });
 winston.debug("parsed arguments", argv);
 

@@ -19,9 +19,9 @@ module.exports = function () {
     ];
 
     var ALGORITHMS = [
-        "bilinear",
-        "nearestNeighbor",
+        "default",
         "bilinearInterpolation",
+        "nearestNeighbor",
         "bicubicInterpolation",
         "hermiteInterpolation",
         "bezierInterpolation"
@@ -49,7 +49,7 @@ module.exports = function () {
         if (!fs.existsSync(outputFolder)) fs.mkdirSync(outputFolder);
         addFiles(inputFolder);
 
-        winston.info("Using " + algorithm.toLocaleUpperCase() + " resizing algorithm.");
+        winston.info("Using '" + algorithm.replace("Interpolation", "") + "' resizing algorithm.");
         winston.info((imageFiles.length + dataFiles.length) + " files to process...");
         processImageFiles();
         processDataFiles();
@@ -123,14 +123,16 @@ module.exports = function () {
                 else if (json["bones"]) {
                     log("Processing spine json " + file);
                     iterator.forAll(json, function (path, key, obj) {
-                        switch (key) {
-                            case "x":
-                            case "y":
-                            case "width":
-                            case "height":
-                            case "length":
-                                obj[key] = obj[key] * scale;
-                                break;
+                        if (path[path.length - 2] !== "scale" && path[path.length - 2] !== "rotate") {
+                            switch (key) {
+                                case "x":
+                                case "y":
+                                case "width":
+                                case "height":
+                                case "length":
+                                    obj[key] = obj[key] * scale;
+                                    break;
+                            }
                         }
                     });
                 }
