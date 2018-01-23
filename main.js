@@ -28,6 +28,10 @@ var optimist = require("optimist")
         alias: "a",
         describe: "1-bilinear, 2-nearestNeighbor, 3-bicubic, 4-hermite, 5-bezier"
     })
+    .options("normalize", {
+        alias: "n",
+        describe: "normalize the channels in the image"
+    })
     .options("verbose", {
         alias: "v",
         describe: "verbose"

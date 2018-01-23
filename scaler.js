@@ -83,14 +83,30 @@ module.exports = function () {
                 count++;
                 if (err) throw err;
                 if (algorithm === ALGORITHMS[0]) {
-                    im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale))
-                        .quality(quality)
-                        .write(file.replace(inputFolder, outputFolder));
+                    if (opts.normalize) {
+                        im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale))
+                            .quality(quality)
+                            .normalize()
+                            .write(file.replace(inputFolder, outputFolder));
+                    }
+                    else {
+                        im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale))
+                            .quality(quality)
+                            .write(file.replace(inputFolder, outputFolder));
+                    }
                 }
                 else {
-                    im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale), algorithm)
-                        .quality(quality)
-                        .write(file.replace(inputFolder, outputFolder));
+                    if (opts.normalize) {
+                        im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale), algorithm)
+                            .quality(quality)
+                            .normalize()
+                            .write(file.replace(inputFolder, outputFolder));
+                    }
+                    else {
+                        im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale), algorithm)
+                            .quality(quality)
+                            .write(file.replace(inputFolder, outputFolder));
+                    }
                 }
                 checkCount();
             });
@@ -177,7 +193,7 @@ module.exports = function () {
         }
         else {
             console.log(key + ": " + obj);
-        };
+        }
     };
 
     function updateSize(data) {

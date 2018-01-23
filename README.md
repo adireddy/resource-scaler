@@ -4,6 +4,7 @@ A simple node utility to resize PNG, JPEG and BMP images using Jimp.
 **Beta Features:**
 
 - Sprite sheet scaling by manipulating the data in JSON files.
+- Spine scaling by manipulating the data in JSON and atlas files.
 
 [![npm version](https://badge.fury.io/js/resource-scaler.svg)](https://badge.fury.io/js/resource-scaler)
 
@@ -21,18 +22,18 @@ A simple node utility to resize PNG, JPEG and BMP images using Jimp.
 | -o, --output    | output folder                       |          |
 | -s, --scale     | scale factor                        |     1    |
 | -q, --quality   | quality (0-100, PNG and JPEG only)  |    100   |
-| -a, --algorithm | 0-5<sup>1</sup>                     |     0    |
+| -a, --algorithm | 1-5<sup>1</sup>                     |          |
+| -n, --normalize | normalize the channels in the image |          |
 | -v, --verbose   | verbose                             |          |
 | -h, --help      | help                                |          |
 
 **<sup>1</sup>Algorithms**
 
-- 0 - bilinear
-- 1 - nearestNeighbor
-- 2 - bilinearInterpolation
-- 3 - bicubicInterpolation
-- 4 - hermiteInterpolation
-- 5 - bezierInterpolation
+- 1 - bilinear
+- 2 - nearestNeighbor
+- 3 - bicubic
+- 4 - hermite
+- 5 - bezier
 
 ### Formats
 
