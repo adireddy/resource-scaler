@@ -2,6 +2,7 @@ var fs = require("fs");
 var yaml = require("js-yaml");
 var Jimp = require("jimp");
 var iterator = require("object-recursive-iterator");
+var winston = require("winston");
 
 module.exports = function () {
 
@@ -41,15 +42,15 @@ module.exports = function () {
         files = fs.readdirSync(inputFolder);
     }
     catch (e) {
-        console.error("input folder '" + inputFolder + "' not found");
+        winston.error("input folder '" + inputFolder + "' not found");
     }
 
     if (files) {
         if (!fs.existsSync(outputFolder)) fs.mkdirSync(outputFolder);
         addFiles(inputFolder);
 
-        console.info("Using '" + algorithm.replace("Interpolation", "") + "' resizing algorithm.");
-        console.info((imageFiles.length + dataFiles.length) + " files to process...");
+        winston.info("Using '" + algorithm.replace("Interpolation", "") + "' resizing algorithm.");
+        winston.info((imageFiles.length + dataFiles.length) + " files to process...");
         processImageFiles();
         processDataFiles();
     }
@@ -226,10 +227,10 @@ module.exports = function () {
     }
 
     function checkCount() {
-        if (imageFiles.length + dataFiles.length === count) console.info("Done.");
+        if (imageFiles.length + dataFiles.length === count) winston.info("Done.");
     }
 
     function log(msg) {
-        if (opts.verbose) console.info(msg);
+        if (opts.verbose) winston.info(msg);
     }
 }

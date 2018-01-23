@@ -61,7 +61,7 @@ if (argv.help || !opts.input || !opts.output) {
     if (!argv.help) winston.error("invalid options");
     winston.info("Usage: resource-scaler -i resources/480x320 -o resources/240x160 -s 0.5");
     winston.info(optimist.help());
-    process.exit(1);
+    process.exit(0);
 }
 
 if (opts.scale === 1) winston.info("using scale 1");
