@@ -116,7 +116,7 @@ module.exports = function () {
     function processDataFiles() {
         dataFiles.forEach(function (file) {
             if (/(.json)$/i.test(file)) {
-                var json = require(process.cwd() + "/" + file);
+                var json = require(file);
                 if (json.multipack) {
                     log("Processing multipack texture json " + file);
                     for (var i in json.textures) {
@@ -156,7 +156,7 @@ module.exports = function () {
             }
             else if (/(.atlas)$/i.test(file)) {
                 log("Processing spine atlas " + file);
-                var data = fs.readFileSync(process.cwd() + "/" + file);
+                var data = fs.readFileSync(file);
                 data = data.toString().replace(/ /g, "");
                 var doc = yaml.safeLoad(data, "utf8");
                 var allData = doc.split(" ");
