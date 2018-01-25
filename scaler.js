@@ -236,7 +236,6 @@ module.exports = function () {
     function checkCount() {
         count++;
         if (imageFiles.length + dataFiles.length === count) winston.info("Done.");
-        process.exit(0);
     }
 
     function log(msg) {
