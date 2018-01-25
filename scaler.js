@@ -80,19 +80,22 @@ module.exports = function () {
         imageFiles.forEach(function (file) {
             Jimp.read(file, function (err, im) {
                 log("Processing " + file);
-                count++;
                 if (err) throw err;
                 if (algorithm === ALGORITHMS[0]) {
                     if (opts.normalize) {
                         im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale))
                             .quality(quality)
                             .normalize()
-                            .write(file.replace(inputFolder, outputFolder));
+                            .write(file.replace(inputFolder, outputFolder), function (err, image) {
+                                checkCount();
+                            });
                     }
                     else {
                         im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale))
                             .quality(quality)
-                            .write(file.replace(inputFolder, outputFolder));
+                            .write(file.replace(inputFolder, outputFolder), function (err, image) {
+                                checkCount();
+                            });
                     }
                 }
                 else {
@@ -100,15 +103,18 @@ module.exports = function () {
                         im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale), algorithm)
                             .quality(quality)
                             .normalize()
-                            .write(file.replace(inputFolder, outputFolder));
+                            .write(file.replace(inputFolder, outputFolder), function (err, image) {
+                                checkCount();
+                            });
                     }
                     else {
                         im.resize(Math.round(im.bitmap.width * scale), Math.round(im.bitmap.height * scale), algorithm)
                             .quality(quality)
-                            .write(file.replace(inputFolder, outputFolder));
+                            .write(file.replace(inputFolder, outputFolder), function (err, image) {
+                                checkCount();
+                            });
                     }
                 }
-                checkCount();
             });
         });
     }
@@ -116,7 +122,7 @@ module.exports = function () {
     function processDataFiles() {
         dataFiles.forEach(function (file) {
             if (/(.json)$/i.test(file)) {
-                var json = require(file);
+                var json = JSON.parse(fs.readFileSync(file, "utf8"));
                 if (json.multipack) {
                     log("Processing multipack texture json " + file);
                     for (var i in json.textures) {
@@ -179,6 +185,7 @@ module.exports = function () {
                 }
                 fs.writeFileSync(file.replace(inputFolder, outputFolder), modifiedData);
             }
+            checkCount();
         });
     }
 
@@ -227,7 +234,9 @@ module.exports = function () {
     }
 
     function checkCount() {
+        count++;
         if (imageFiles.length + dataFiles.length === count) winston.info("Done.");
+        process.exit(0);
     }
 
     function log(msg) {
