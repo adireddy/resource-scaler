@@ -1,8 +1,8 @@
 var fs = require("fs");
-var yaml = require("js-yaml");
 var Jimp = require("jimp");
 var iterator = require("object-recursive-iterator");
 var winston = require("winston");
+var lineByLine = require("n-readlines");
 
 module.exports = function () {
 
@@ -56,8 +56,9 @@ module.exports = function () {
             processImageFiles();
             processDataFiles();
         }
-        catch(e) {
+        catch (e) {
             if (opts.error && typeof opts.error === "function") opts.error();
+            winston.error(e);
         }
     }
 
@@ -168,27 +169,34 @@ module.exports = function () {
             }
             else if (/(.atlas)$/i.test(file)) {
                 log("Processing spine atlas " + file);
-                var data = fs.readFileSync(file);
-                data = data.toString().replace(/ /g, "");
-                var doc = yaml.safeLoad(data, "utf8");
-                var allData = doc.split(" ");
 
-                var modifiedData = allData[0] + "\n";
-                for (var i = 1; i < allData.length; i++) {
-                    var dataVal = allData[i].split(":");
-                    switch (dataVal[0]) {
-                        case "xy":
-                        case "orig":
-                        case "size":
-                            var valueData = dataVal[1].split(",");
-                            valueData[0] = valueData[0] * scale;
-                            valueData[1] = valueData[1] * scale;
-                            dataVal[1] = valueData.join(",");
-                            break;
+                var modifiedData = "";
+                var liner = new lineByLine(file);
+                var line;
+                while (line = liner.next()) {
+                    line = line.toString();
+                    if (/.*xy:.*/g.test(line) || /.*orig:.*/g.test(line) || /.*size:.*/g.test(line)) {
+                        var modified = line.replace(/ /g, "");
+                        var dataVal = modified.split(":");
+
+                        switch (dataVal[0]) {
+                            case "xy":
+                            case "orig":
+                            case "size":
+                                var valueData = dataVal[1].split(",");
+                                valueData[0] = valueData[0] * scale;
+                                valueData[1] = valueData[1] * scale;
+                                dataVal[1] = valueData.join(",");
+                                break;
+                        }
+                        if (dataVal[1]) modifiedData += "  " + dataVal.join(":") + "\n";
+                        else modifiedData += line + "\n";
                     }
-                    if (dataVal[1]) modifiedData += "  " + dataVal.join(":") + "\n";
-                    else modifiedData += dataVal.join(":") + "\n";
+                    else {
+                        modifiedData += line.toString() + "\n";
+                    }
                 }
+
                 fs.writeFileSync(file.replace(inputFolder, outputFolder), modifiedData);
             }
             checkCount();
