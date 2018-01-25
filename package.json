@@ -1,6 +1,6 @@
 {
 	"name": "resource-scaler",
-	"version": "2.1.4",
+	"version": "2.1.5",
 	"description": "A simple node utility to resize PNG, JPEG and BMP images using Jimp.",
 	"main": "./scaler.js",
 	"license": "MIT",

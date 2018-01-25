@@ -2,6 +2,7 @@ var fs = require("fs");
 var yaml = require("js-yaml");
 var Jimp = require("jimp");
 var iterator = require("object-recursive-iterator");
+var winston = require("winston");
 
 module.exports = function () {
 
@@ -41,17 +42,23 @@ module.exports = function () {
         files = fs.readdirSync(inputFolder);
     }
     catch (e) {
-        console.error("input folder '" + inputFolder + "' not found");
+        winston.error("input folder '" + inputFolder + "' not found");
     }
 
     if (files) {
         if (!fs.existsSync(outputFolder)) fs.mkdirSync(outputFolder);
         addFiles(inputFolder);
 
-        console.info("Using '" + algorithm.replace("Interpolation", "") + "' resizing algorithm.");
-        console.info((imageFiles.length + dataFiles.length) + " files to process...");
-        processImageFiles();
-        processDataFiles();
+        winston.info("Using '" + algorithm.replace("Interpolation", "") + "' resizing algorithm.");
+        winston.info((imageFiles.length + dataFiles.length) + " files to process...");
+
+        try {
+            processImageFiles();
+            processDataFiles();
+        }
+        catch(e) {
+            if (opts.error && typeof opts.error === "function") opts.error();
+        }
     }
 
     function addFiles(folder) {
@@ -188,20 +195,6 @@ module.exports = function () {
         });
     }
 
-    function scanSpinJson(obj, key) {
-        var k;
-        if (obj instanceof Object) {
-            for (k in obj){
-                if (obj.hasOwnProperty(k)){
-                    scanSpinJson(obj[k], k);
-                }
-            }
-        }
-        else {
-            console.log(key + ": " + obj);
-        }
-    };
-
     function updateSize(data) {
         data.size.w = data.size.w * scale;
         data.size.h = data.size.h * scale;
@@ -234,10 +227,13 @@ module.exports = function () {
 
     function checkCount() {
         count++;
-        if (imageFiles.length + dataFiles.length === count) console.info("Done.");
+        if (imageFiles.length + dataFiles.length === count) {
+            winston.info("Done.");
+            if (opts.complete && typeof opts.complete === "function") opts.complete();
+        }
     }
 
     function log(msg) {
-        if (opts.verbose) console.info(msg);
+        if (opts.verbose) winston.info(msg);
     }
 }
