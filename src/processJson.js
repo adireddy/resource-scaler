@@ -1,15 +1,15 @@
-var fs = require("fs");
-var iterator = require("object-recursive-iterator");
+const fs = require("fs");
+const iterator = require("object-recursive-iterator");
 
 module.exports = function (file, scale, inputFolder, outputFolder, callback, log) {
-    var json = JSON.parse(fs.readFileSync(file, "utf8"));
+    let json = JSON.parse(fs.readFileSync(file, "utf8"));
     if (json.multipack) {
         log("Processing multipack json " + file);
-        for (var i in json.textures) {
-            var textures = json.textures[i];
+        for (let i in json.textures) {
+            let textures = json.textures[i];
             if (textures["meta"]) updateSize(textures["meta"], scale);
-            for (var frameData in textures["frames"]) {
-                var data = textures["frames"][frameData];
+            for (let frameData in textures["frames"]) {
+                let data = textures["frames"][frameData];
                 processTextureData(data, scale);
             }
         }
@@ -17,8 +17,8 @@ module.exports = function (file, scale, inputFolder, outputFolder, callback, log
     else if (json["frames"]) {
         log("Processing json " + file);
         if (json["meta"]) updateSize(json["meta"], scale);
-        for (var frameData in json["frames"]) {
-            var data = json["frames"][frameData];
+        for (let frameData in json["frames"]) {
+            let data = json["frames"][frameData];
             processTextureData(data, scale);
         }
     }
@@ -43,7 +43,7 @@ module.exports = function (file, scale, inputFolder, outputFolder, callback, log
 }
 
 function processTextureData(data, scale) {
-    for (var key in data) {
+    for (let key in data) {
         switch (key) {
             case "frame":
             case "spriteSourceSize":
@@ -60,7 +60,7 @@ function updateSize(data, scale) {
 }
 
 function applyDataScale(data, scale) {
-    for (var key in data) {
+    for (let key in data) {
         switch (key) {
             case "x":
             case "y":

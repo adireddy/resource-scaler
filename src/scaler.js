@@ -1,24 +1,24 @@
-var fs = require("fs");
-var processImage = require("./processImage");
-var processJson = require("./processJson");
-var processAtlas = require("./processAtlas");
-var winston = require("winston");
+const fs = require("fs");
+const processImage = require("./processImage");
+const processJson = require("./processJson");
+const processAtlas = require("./processAtlas");
+const winston = require("winston");
 
 module.exports = function () {
 
-    var IMAGE_EXTENSIONS = [
+    const IMAGE_EXTENSIONS = [
         /(.jpg)$/i,
         /(.jpeg)$/i,
         /(.png)$/i,
         /(.bmp)$/i
     ];
 
-    var DATA_EXTENSIONS = [
+    const DATA_EXTENSIONS = [
         /(.json)$/i,
         /(.atlas)$/i
     ];
 
-    var ALGORITHMS = [
+    const ALGORITHMS = [
         "default",
         "bilinearInterpolation",
         "nearestNeighbor",
@@ -27,17 +27,17 @@ module.exports = function () {
         "bezierInterpolation"
     ];
 
-    var opts = arguments[0];
-    var inputFolder = opts.input;
-    var outputFolder = opts.output;
-    var scale = opts.scale;
-    var quality = opts.quality;
-    var normalize = opts.normalize;
-    var algorithm = ALGORITHMS[opts.algorithm];
-    var files = [];
-    var imageFiles = [];
-    var dataFiles = [];
-    var count = 0;
+    let opts = arguments[0];
+    let inputFolder = opts.input;
+    let outputFolder = opts.output;
+    let scale = opts.scale;
+    let quality = opts.quality;
+    let normalize = opts.normalize;
+    let algorithm = ALGORITHMS[opts.algorithm];
+    let files = [];
+    let imageFiles = [];
+    let dataFiles = [];
+    let count = 0;
 
     try {
         files = fs.readdirSync(inputFolder);
@@ -64,20 +64,20 @@ module.exports = function () {
     }
 
     function addFiles(folder) {
-        var folderFiles = fs.readdirSync(folder);
-        folderFiles.forEach(function (item) {
-            var path = folder + "/" + item;
-            var stats = fs.statSync(path);
+        let folderFiles = fs.readdirSync(folder);
+        folderFiles.forEach((item) => {
+            let path = folder + "/" + item;
+            let stats = fs.statSync(path);
             if (stats.isDirectory()) {
-                var newFolder = path.replace(inputFolder, outputFolder);
+                let newFolder = path.replace(inputFolder, outputFolder);
                 if (!fs.existsSync(newFolder)) fs.mkdirSync(newFolder);
                 addFiles(path);
             }
             else {
-                IMAGE_EXTENSIONS.forEach(function (ext) {
+                IMAGE_EXTENSIONS.forEach((ext) => {
                     if (ext.test(item)) imageFiles.push(path);
                 });
-                DATA_EXTENSIONS.forEach(function (ext) {
+                DATA_EXTENSIONS.forEach((ext) => {
                     if (ext.test(item)) dataFiles.push(path);
                 });
             }
@@ -85,13 +85,13 @@ module.exports = function () {
     }
 
     function processImageFiles() {
-        imageFiles.forEach(function (file) {
+        imageFiles.forEach((file) => {
             processImage(file, algorithm, scale, quality, normalize, inputFolder, outputFolder, checkCount, log);
         });
     }
 
     function processDataFiles() {
-        dataFiles.forEach(function (file) {
+        dataFiles.forEach((file) => {
             if (/(.json)$/i.test(file)) {
                 processJson(file, scale, inputFolder, outputFolder, checkCount, log);
             }

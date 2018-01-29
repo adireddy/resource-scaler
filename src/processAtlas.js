@@ -1,22 +1,22 @@
-var fs = require("fs");
-var lineByLine = require("n-readlines");
+const fs = require("fs");
+const lineByLine = require("n-readlines");
 
 module.exports = function (file, scale, inputFolder, outputFolder, callback, log) {
     log("Processing spine atlas " + file);
-    var modifiedData = "";
-    var liner = new lineByLine(file);
-    var line;
+    let modifiedData = "";
+    let liner = new lineByLine(file);
+    let line;
     while (line = liner.next()) {
         line = line.toString();
         if (/.*xy:.*/g.test(line) || /.*orig:.*/g.test(line) || /.*size:.*/g.test(line)) {
-            var modified = line.replace(/ /g, "");
-            var dataVal = modified.split(":");
+            let modified = line.replace(/ /g, "");
+            let dataVal = modified.split(":");
 
             switch (dataVal[0]) {
                 case "xy":
                 case "orig":
                 case "size":
-                    var valueData = dataVal[1].split(",");
+                    let valueData = dataVal[1].split(",");
                     valueData[0] = valueData[0] * scale;
                     valueData[1] = valueData[1] * scale;
                     dataVal[1] = valueData.join(",");

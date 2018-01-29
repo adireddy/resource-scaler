@@ -1,4 +1,4 @@
-var Jimp = require("jimp");
+const Jimp = require("jimp");
 
 module.exports = function (file, algorithm, scale, quality, normalize, inputFolder, outputFolder, callback, log) {
     log("Processing image " + file);

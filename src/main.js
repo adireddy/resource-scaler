@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
-var _ = require("underscore")._;
-var winston = require("winston");
+const _ = require("underscore")._;
+const winston = require("winston");
+const scaler = require("./scaler");
 
-var scaler = require("./scaler");
-
-var optimist = require("optimist")
+let optimist = require("optimist")
     .options("input", {
         alias: "i",
         describe: "input folder"
@@ -41,8 +40,8 @@ var optimist = require("optimist")
         describe: "help"
     });
 
-var argv = optimist.argv;
-var opts = _.extend({}, argv);
+let argv = optimist.argv;
+let opts = _.extend({}, argv);
 
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {
