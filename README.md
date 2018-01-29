@@ -1,10 +1,12 @@
 # resource-scaler [![npm version](https://badge.fury.io/js/resource-scaler.svg)](https://badge.fury.io/js/resource-scaler)
-A simple node utility to resize PNG, JPEG and BMP images using Jimp.
+A simple node utility to resize PNG, JPEG and BMP images including sprite sheets and spine animations.
 
 **Beta Features:**
 
 - Sprite sheet scaling by manipulating the data in JSON files.
 - Spine scaling by manipulating the data in JSON and atlas files.
+
+Image resizing is done using Jimp.
 
 ### Installation
 
@@ -38,6 +40,8 @@ A simple node utility to resize PNG, JPEG and BMP images using Jimp.
 - jpg
 - png
 - bmp
+- json (texture packer and spine)
+- atlas (spine)
 
 Any issues please [report](https://github.com/adireddy/resource-scaler/issues/new).
 
@@ -46,7 +50,9 @@ Any issues please [report](https://github.com/adireddy/resource-scaler/issues/ne
 <a rel="license" href="http://opensource.org/licenses/MIT">
 <img alt="MIT license" height="40" src="http://upload.wikimedia.org/wikipedia/commons/c/c3/License_icon-mit.svg" /></a>
 
-This content is released under the [MIT](http://opensource.org/licenses/MIT) License.
+This content is released under the [MIT](http://opensource.org/licenses/MIT) license.
+
+Jimp is licensed under the [MIT](http://opensource.org/licenses/MIT) license.
 
 ### Contributor Code of Conduct
 
