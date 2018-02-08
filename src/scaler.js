@@ -103,6 +103,12 @@ module.exports = function () {
 
     function checkCount() {
         count++;
+        if (opts.progress && typeof opts.progress === "function") {
+            let total = imageFiles.length + dataFiles.length;
+            let percentage = Math.round((count / total) * 100);
+            opts.progress(percentage);
+            log(percentage + "% complete");
+        }
         if (imageFiles.length + dataFiles.length === count) {
             winston.info("Done.");
             if (opts.complete && typeof opts.complete === "function") opts.complete();
