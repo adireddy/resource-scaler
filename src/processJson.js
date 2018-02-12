@@ -24,7 +24,7 @@ module.exports = function (file, scale, inputFolder, outputFolder, callback, log
     else if (json["bones"] && baseScale) {
         log("Processing spine json " + file);
         json["scalerMetadata"] = {
-            scale: scale,
+            spineSkeletonScale: scale,
             baseScale: baseScale
         }
     }
