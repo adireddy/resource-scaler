@@ -1,7 +1,6 @@
 const fs = require("fs");
-const iterator = require("object-recursive-iterator");
 
-module.exports = function (file, scale, inputFolder, outputFolder, callback, log) {
+module.exports = function (file, scale, inputFolder, outputFolder, callback, log, baseScale) {
     let json = JSON.parse(fs.readFileSync(file, "utf8"));
     if (json.multipack) {
         log("Processing multipack json " + file);
@@ -22,21 +21,12 @@ module.exports = function (file, scale, inputFolder, outputFolder, callback, log
             processTextureData(data, scale);
         }
     }
-    else if (json["bones"]) {
+    else if (json["bones"] && baseScale) {
         log("Processing spine json " + file);
-        iterator.forAll(json, function (path, key, obj) {
-            if (path[path.length - 2] !== "scale" && path[path.length - 2] !== "rotate") {
-                switch (key) {
-                    case "x":
-                    case "y":
-                    case "width":
-                    case "height":
-                    case "length":
-                        obj[key] = obj[key] * scale;
-                        break;
-                }
-            }
-        });
+        json["scalerMetadata"] = {
+            scale: scale,
+            baseScale: baseScale
+        }
     }
     fs.writeFileSync(file.replace(inputFolder, outputFolder), JSON.stringify(json, null, 2));
     callback();

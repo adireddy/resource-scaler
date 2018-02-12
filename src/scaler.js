@@ -39,6 +39,8 @@ module.exports = function () {
     let dataFiles = [];
     let count = 0;
 
+    if (!opts.meta) opts.meta = {};
+
     try {
         files = fs.readdirSync(inputFolder);
     }
@@ -58,7 +60,7 @@ module.exports = function () {
             processDataFiles();
         }
         catch (e) {
-            if (opts.error && typeof opts.error === "function") opts.error();
+            if (opts.meta.error && typeof opts.meta.error === "function") opts.meta.error();
             winston.error(e);
         }
     }
@@ -93,7 +95,7 @@ module.exports = function () {
     function processDataFiles() {
         dataFiles.forEach((file) => {
             if (/(.json)$/i.test(file)) {
-                processJson(file, scale, inputFolder, outputFolder, checkCount, log);
+                processJson(file, scale, inputFolder, outputFolder, checkCount, log, opts.meta.baseScale);
             }
             else if (/(.atlas)$/i.test(file)) {
                 processAtlas(file, scale, inputFolder, outputFolder, checkCount, log);
@@ -103,15 +105,15 @@ module.exports = function () {
 
     function checkCount() {
         count++;
-        if (opts.progress && typeof opts.progress === "function") {
+        if (opts.meta.progress && typeof opts.meta.progress === "function") {
             let total = imageFiles.length + dataFiles.length;
             let percentage = Math.round((count / total) * 100);
-            opts.progress(percentage);
+            opts.meta.progress(percentage);
             log(percentage + "% complete");
         }
         if (imageFiles.length + dataFiles.length === count) {
             winston.info("Done.");
-            if (opts.complete && typeof opts.complete === "function") opts.complete();
+            if (opts.meta.complete && typeof opts.meta.complete === "function") opts.meta.complete();
         }
     }
 
