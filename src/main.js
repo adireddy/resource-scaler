@@ -5,6 +5,11 @@ const winston = require("winston");
 const scaler = require("./scaler");
 
 let optimist = require("optimist")
+    .options("tool", {
+        alias: "t",
+        default: "sharp",
+        describe: "jimp or sharp"
+    })
     .options("input", {
         alias: "i",
         describe: "input folder"
@@ -20,12 +25,16 @@ let optimist = require("optimist")
     })
     .options("quality", {
         alias: "q",
-        "default": 100,
+        default: 100,
         describe: "quality (0-100, PNG and JPEG only)"
     })
-    .options("algorithm", {
-        alias: "a",
-        describe: "1-bilinear, 2-nearestNeighbor, 3-bicubic, 4-hermite, 5-bezier"
+    .options("jimp_algorithm", {
+        alias: "ja",
+        describe: "1-bilinear, 2-nearest, 3-bicubic, 4-hermite, 5-bezier"
+    })
+    .options("sharp_algorithm", {
+        alias: "sa",
+        describe: "1-nearest, 2-cubic, 3-lanczos2, 4-lanczos3"
     })
     .options("normalize", {
         alias: "n",
@@ -52,9 +61,11 @@ winston.add(winston.transports.Console, {
 winston.debug("parsed arguments", argv);
 
 opts.logger = winston;
+opts.tool = argv.tool && (argv.tool === "jimp" || argv.tool === "sharp") ? argv.tool : "sharp";
 opts.scale = argv.scale && Number(argv.scale) > 0 ? Number(argv.scale) : 1;
 opts.quality = argv.quality && Number(argv.quality) >= 0 && Number(argv.quality) <= 100 ? Number(argv.quality) : 100;
-opts.algorithm = argv.algorithm && Number(argv.algorithm) >= 0 && Number(argv.algorithm) <= 5 ? Number(argv.algorithm) : 0;
+opts.jimp_algorithm = argv.jimp_algorithm && Number(argv.jimp_algorithm) >= 1 && Number(argv.jimp_algorithm) <= 5 ? Number(argv.jimp_algorithm) : 1;
+opts.sharp_algorithm = argv.sharp_algorithm && Number(argv.sharp_algorithm) >= 1 && Number(argv.sharp_algorithm) <= 4 ? Number(argv.sharp_algorithm) : 4;
 
 if (argv.help || !opts.input || !opts.output) {
     if (!argv.help) winston.error("invalid options");

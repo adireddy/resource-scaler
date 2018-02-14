@@ -18,13 +18,19 @@ module.exports = function () {
         /(.atlas)$/i
     ];
 
-    const ALGORITHMS = [
-        "default",
+    const JIMP_ALGORITHMS = [
         "bilinearInterpolation",
         "nearestNeighbor",
         "bicubicInterpolation",
         "hermiteInterpolation",
         "bezierInterpolation"
+    ];
+
+    const SHARP_ALGORITHMS = [
+        "nearest",
+        "cubic",
+        "lanczos2",
+        "lanczos3"
     ];
 
     let opts = arguments[0];
@@ -33,7 +39,7 @@ module.exports = function () {
     let scale = opts.scale;
     let quality = opts.quality;
     let normalize = opts.normalize;
-    let algorithm = ALGORITHMS[opts.algorithm];
+    let algorithm = opts.tool === "jimp" ? JIMP_ALGORITHMS[opts.jimp_algorithm - 1] : SHARP_ALGORITHMS[opts.sharp_algorithm - 1];
     let files = [];
     let imageFiles = [];
     let dataFiles = [];
@@ -52,7 +58,7 @@ module.exports = function () {
         if (!fs.existsSync(outputFolder)) fs.mkdirSync(outputFolder);
         addFiles(inputFolder);
 
-        winston.info("Using '" + algorithm.replace("Interpolation", "") + "' resizing algorithm.");
+        winston.info("Using " + opts.tool.toUpperCase() +" with '" + algorithm.replace("Interpolation", "") + "' resizing algorithm.");
         winston.info((imageFiles.length + dataFiles.length) + " files to process...");
 
         try {
@@ -88,7 +94,18 @@ module.exports = function () {
 
     function processImageFiles() {
         imageFiles.forEach((file) => {
-            processImage(file, algorithm, scale, quality, normalize, inputFolder, outputFolder, checkCount, log);
+            processImage({
+                tool: opts.tool,
+                file: file,
+                algorithm: algorithm,
+                scale: scale,
+                quality: quality,
+                normalize: normalize,
+                inputFolder: inputFolder,
+                outputFolder: outputFolder,
+                callback: checkCount,
+                logFunction: log
+            });
         });
     }
 
