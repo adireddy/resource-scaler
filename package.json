@@ -1,7 +1,7 @@
 {
 	"name": "resource-scaler",
-	"version": "2.1.10",
-	"description": "A simple node utility to resize PNG, JPEG and BMP images using Jimp.",
+	"version": "2.2.0",
+	"description": "A simple node utility to resize images including sprite sheets and spine animations.",
 	"main": "./src/scaler.js",
 	"license": "MIT",
 	"bin": {
@@ -33,10 +33,12 @@
 		"grunt-exec": "latest"
 	},
 	"dependencies": {
-		"winston": "~1.0.0",
-		"optimist": "~0.6.1",
-		"underscore": "~1.8.3",
+		"image-size": "^0.6.2",
 		"jimp": "~0.2.27",
-		"n-readlines": "~0.2.8"
+		"n-readlines": "~0.2.8",
+		"optimist": "~0.6.1",
+		"sharp": "^0.19.0",
+		"underscore": "~1.8.3",
+		"winston": "~1.0.0"
 	}
 }
